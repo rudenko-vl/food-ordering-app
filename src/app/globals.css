@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+section.hero {
+  @apply grid;
+  grid-template-columns: 0.4fr 0.6fr;
+}
+
+h1.title {
+  font-size: 36px;
+  font-weight: 700;
+  color: blue;
+  margin-top: 30px;
+  text-align: center;
+}
