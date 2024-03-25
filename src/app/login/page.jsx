@@ -1,9 +1,7 @@
-import Header from "@/components/layout/Header";
 
 const Login = () => {
   return (
-    <>
-      <Header />
+    <div className="w-96">
       <h1 className="title">Login</h1>
       <form
         action=""
@@ -23,7 +21,7 @@ const Login = () => {
           Log In
         </button>
       </form>
-    </>
+    </div>
   );
 };
 
