@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
+import { Loader } from "@/components/layout/Loader";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -9,42 +10,58 @@ const RegisterPage = () => {
   const [creatingUser, setCreatingUser] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
   const [error, setError] = useState(false);
-  async function handleFormSubmit (ev) {
-    ev.prventDefault();
+
+  const isEmail = email.length;
+  const isPass = password.length;
+
+  const clearInputs = () => {
+    setEmail("");
+    setPassword("");
+  };
+
+  async function handleFormSubmit(ev) {
+    ev.preventDefault();
     setCreatingUser(true);
     setError(false);
     setUserCreated(false);
-  
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      body: JSON.stringify({email, password}),
-      headers: {'Content-Type': 'application/json'},
+
+    const response = await fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: { "Content-Type": "application/json" },
     });
     if (response.ok) {
       setUserCreated(true);
     } else {
-    setError(true);
+      setError(true);
     }
     setCreatingUser(false);
-  };
+    clearInputs();
+  }
 
   return (
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl mb-4">Register</h1>
-      {userCreated && 
-      (<div className="my-4 text-center">
-          User created.<br/> 
-          Now you can{' '}
-          <Link className="underline" href={'/login'}>Login &raquo</Link>
-        </div>)}
+      {userCreated && (
+        <div className="my-4 text-center">
+          User created.
+          <br />
+          Now you can{" "}
+          <Link className="underline" href={"/login"}>
+            Login &raquo;
+          </Link>
+        </div>
+      )}
 
-        {error && 
-      (<div className="my-4 text-center">
-          Error<br/> 
+      {error && (
+        <div className="my-4 text-center text-red-600 font-semibold">
+          Error!
+          <br />
           Please try again later
-        </div>)}
+        </div>
+      )}
 
-      <form action="" className="block mx-auto" onSubmit={handleFormSubmit}>
+      <form className="block mx-auto" onSubmit={handleFormSubmit}>
         <input
           type="email"
           placeholder="email"
@@ -59,7 +76,9 @@ const RegisterPage = () => {
           disabled={creatingUser}
           onChange={(ev) => setPassword(ev.target.value)}
         />
-        <button type="submit" disabled={creatingUser}>Register</button>
+        <button type="submit" disabled={isEmail && isPass ? false : true}>
+          {creatingUser ? <Loader size={20} /> : "Register"}
+        </button>
         <div className="my-4 text-center text-gray-500">
           or login with provider
         </div>
