@@ -1,28 +1,66 @@
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import { Loader } from "@/components/layout/Loader";
+import { signIn } from "next-auth/react";
 
-const Login = () => {
+const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginInProgress, setLoginInProgress] = useState(false);
+  const isEmail = email.length;
+  const isPass = password.length;
+
+  const clearInputs = () => {
+    setEmail("");
+    setPassword("");
+  };
+
+  async function handleFormSubmit(ev) {
+    ev.preventDefault();
+    setLoginInProgress(true);
+
+    await signIn("credentials", { email, password });
+
+    setLoginInProgress(false);
+    clearInputs();
+  }
+
   return (
-    <div className="w-96">
-      <h1 className="title">Login</h1>
-      <form
-        action=""
-        className="flex items-center flex-col border-2 border-black p-8 w-2/3 mt-4 mx-auto"
-      >
+    <section className="mt-8">
+      <h1 className="text-center text-primary text-4xl mb-4 font-bold">
+        Login
+      </h1>
+      <form onSubmit={handleFormSubmit}>
         <input
-          type="text"
+          type="email"
           placeholder="email"
-          className="my-4 outline-green-400 p-2 min-w-full border-2"
+          value={email}
+          name="email"
+          disabled={loginInProgress}
+          onChange={(ev) => setEmail(ev.target.value)}
         />
         <input
-          type="text"
+          type="password"
           placeholder="password"
-          className="my-4 outline-green-400 p-2 min-w-full border-2"
+          value={password}
+          name="password"
+          disabled={loginInProgress}
+          onChange={(ev) => setPassword(ev.target.value)}
         />
-        <button className="bg-primary text-white py-1 px-3 rounded-lg font-semibold mt-2 hover:bg-hover transition ease-in-out delay-150">
-          Log In
+        <button type="submit" disabled={isEmail && isPass ? false : true}>
+          {loginInProgress ? <Loader size={20} /> : "Login"}
+        </button>
+        <div className="my-4 text-center text-gray-500">
+          or login with provider
+        </div>
+        <button className="flex gap-4 justify-center">
+          <Image src={"/google.png"} alt="google-logo" width={24} height={24} />
+          Login with Google
         </button>
       </form>
-    </div>
+    </section>
   );
 };
 
-export default Login;
+export default LoginPage;

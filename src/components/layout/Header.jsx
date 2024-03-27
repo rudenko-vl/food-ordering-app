@@ -1,5 +1,10 @@
+"use client";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 const Header = () => {
+  const session = useSession();
+  const status = session.status;
+  console.log(status);
   return (
     <header className="flex items-center justify-between border-b p-3 shadow-md shadow-black/25">
       <nav className="flex items-center gap-8 text-gray-500 font-semibold">

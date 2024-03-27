@@ -41,7 +41,9 @@ const RegisterPage = () => {
 
   return (
     <section className="mt-8">
-      <h1 className="text-center text-primary text-4xl mb-4">Register</h1>
+      <h1 className="text-center text-primary text-4xl mb-4 font-bold">
+        Register
+      </h1>
       {userCreated && (
         <div className="my-4 text-center">
           User created.
@@ -92,6 +94,12 @@ const RegisterPage = () => {
           />
           Login with Google
         </button>
+        <div className="text-center my-4 text-gray-500 border-t pt-4">
+          Existing account?{" "}
+          <Link className="underline" href={"/login"}>
+            Login here &raquo;
+          </Link>
+        </div>
       </form>
     </section>
   );
