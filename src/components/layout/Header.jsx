@@ -25,7 +25,7 @@ const Header = () => {
         <Link href={"#contact"}>Contact</Link>
       </nav>
       <nav className="flex items-center gap-4 text-gray-500 font-semibold">
-        {status === "authenticated" && (
+        {status === "authenticated" ? (
           <>
             <Link className="whitespace-nowrap" href={"/profile"}>
               Hello, {userName}
@@ -37,8 +37,7 @@ const Header = () => {
               Log Out
             </button>
           </>
-        )}
-        {status === "unauthenticated" && (
+        ) : (
           <>
             <Link href={"/login"}>Login</Link>
             <Link
