@@ -37,3 +37,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 yarn add @aws-sdk/client-s3
 yarn add uniqid
+yarn add react-hot-toast

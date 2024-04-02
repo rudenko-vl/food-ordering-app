@@ -4,13 +4,12 @@ import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { RedLoader } from "@/components/layout/Loader";
+import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
   const session = useSession();
   const [userName, setUserName] = useState("");
   const [image, setImage] = useState("");
-  const [saved, setSaved] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const { status } = session;
 
   useEffect(() => {
@@ -22,38 +21,53 @@ export default function ProfilePage() {
 
   async function handleProfileInfoUpdate(ev) {
     ev.preventDefault();
-    setSaved(false);
-    setIsSaving(true);
-
-    const response = await fetch("/api/profile", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: userName, image }),
+    toast('Saving');
+    const savingPromise = new Promise(async (resolve, reject)=> {
+      const response = await fetch("/api/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: userName, image }),
+      });
+      if (response.ok) 
+        resolve()
+       else 
+        reject()
     });
 
-    setIsSaving(false);
+    await toast.promise(savingPromise, {
+      loading: 'Saving...',
+      success: 'Profile saved!',
+      error: 'Error',
+    })
 
-    if (response.ok) {
-      setSaved(true);
-    }
-    setTimeout(() => {
-      setSaved(false);
-    }, 1500);
-  }
+  };
 
   async function handleFileChange(ev) {
     const files = ev.target.files;
     if (files?.length === 1) {
       const data = new FormData();
       data.set("file", files[0]);
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
-      });
-      const link = await response.json();
-      setImage(link);
-    }
-  }
+
+      const uploadPromise = fetch("/api/upload", {
+          method: "POST",
+          body: data,
+        }).then(response => {
+          if (response.ok) {
+           return response.json().then(link => {
+              setImage(link);
+            })
+          }
+          throw new Error('Something went wrong');
+        });
+
+      await toast.promise(uploadPromise, {
+        loading: 'Uploading...',
+        success: 'Upload complete!',
+        error: 'Upload error',
+      })
+
+    };
+  };
 
   if (status === "loading") {
     return <RedLoader size={80} />;
@@ -69,13 +83,13 @@ export default function ProfilePage() {
         Profile
       </h1>
       <div className="max-w-md mx-auto">
-        {saved && (
+        {/* {saved && (
           <h2 className="text-center bg-green-100 p-4 rounded-lg border border-green-300">
             Profile saved!
           </h2>
-        )}
+        )} */}
 
-        {isSaving && <RedLoader size={80} />}
+        {/* {isSaving || isUploading && <RedLoader size={80} />} */}
 
         <div className="flex gap-4 items-center">
           <div>
