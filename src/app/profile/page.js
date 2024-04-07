@@ -95,7 +95,7 @@ export default function ProfilePage() {
                   type="file"
                   className="hidden"
                   onChange={handleFileChange}
-                  // disabled="true"
+                  disabled="true"
                 />
                 <span className="block border border-gray-300 rounded-lg p-2 text-center cursor-pointer">
                   Edit
