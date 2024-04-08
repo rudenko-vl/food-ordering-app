@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import  UserTabs  from "@/components/layout/UserTabs";
 import { useProfile } from "@/components/UseProfile";
 import { RedLoader } from "@/components/layout/Loader";

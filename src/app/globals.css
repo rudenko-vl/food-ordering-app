@@ -32,7 +32,7 @@ input[type="tel"] {
 input[type="email"]:disabled,
 input[type="password"]:disabled,
 input[type="text"]:disabled,
-input[type="tel"]:disabled  {
+input[type="tel"]:disabled {
   @apply bg-gray-300 border-0 cursor-not-allowed text-gray-500;
 }
 
@@ -41,7 +41,7 @@ label {
 }
 
 label + input {
-margin-top: -2px;
+  margin-top: -2px;
 }
 
 button {
@@ -63,7 +63,7 @@ form {
 }
 
 div.tabs > * {
-  @apply bg-gray text-gray-700 rounded-full py-2 px-4;
+  @apply bg-gray-300 text-gray-700 rounded-full py-2 px-4;
 }
 
 div.tabs > *.active {

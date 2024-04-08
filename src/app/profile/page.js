@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { RedLoader } from "@/components/layout/Loader";
-import  UserTabs  from "@/components/layout/UserTabs";
+import UserTabs from "@/components/layout/UserTabs";
 import toast from "react-hot-toast";
 
 export default function ProfilePage() {
@@ -24,8 +24,8 @@ export default function ProfilePage() {
     if (status === "authenticated") {
       setUserName(session.data.user.name);
       setImage(session.data.user.image);
-      fetch('/api/profile').then(response => {
-        response.json().then(data=> {
+      fetch("/api/profile").then((response) => {
+        response.json().then((data) => {
           setPhone(data.phone);
           setStreetAddress(data.streetAddress);
           setPostalCode(data.postalCode);
@@ -33,8 +33,8 @@ export default function ProfilePage() {
           setCountry(data.country);
           setIsAdmin(data.admin);
           setProfileFetched(true);
-        })
-      })
+        });
+      });
     }
   }, [session, status]);
 
@@ -44,15 +44,15 @@ export default function ProfilePage() {
       const response = await fetch("/api/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          name: userName, 
+        body: JSON.stringify({
+          name: userName,
           image,
           streetAddress,
           phone,
           postalCode,
           city,
           country,
-         }),
+        }),
       });
       if (response.ok) resolve();
       else reject();
@@ -101,7 +101,7 @@ export default function ProfilePage() {
 
   return (
     <section className="mt-8">
-      <UserTabs isAdmin={isAdmin}/>
+      <UserTabs isAdmin={isAdmin} />
       <div className="max-w-md mx-auto mt-8">
         <div className="flex gap-4">
           <div>
@@ -120,7 +120,6 @@ export default function ProfilePage() {
                   type="file"
                   className="hidden"
                   onChange={handleFileChange}
-                  disabled="true"
                 />
                 <span className="block border border-gray-300 rounded-lg p-2 text-center cursor-pointer">
                   Edit
@@ -129,9 +128,7 @@ export default function ProfilePage() {
             </div>
           </div>
           <form className="grow" onSubmit={handleProfileInfoUpdate}>
-            <label>
-              First and last name
-            </label>
+            <label>First and last name</label>
             <input
               type="text"
               placeholder="First and last name"
@@ -146,40 +143,45 @@ export default function ProfilePage() {
               placeholder="email"
             />
             <label>Phone</label>
-            <input type="tel"
-            placeholder="Phone number"
-            value={phone}
-            onChange={ev => setPhone(ev.target.value)}
+            <input
+              type="tel"
+              placeholder="Phone number"
+              value={phone}
+              onChange={(ev) => setPhone(ev.target.value)}
             />
-             <label>Street address</label>
-            <input type="text"
-            placeholder="Street address"
-            value={streetAddress}
-            onChange={ev => setStreetAddress(ev.target.value)}
+            <label>Street address</label>
+            <input
+              type="text"
+              placeholder="Street address"
+              value={streetAddress}
+              onChange={(ev) => setStreetAddress(ev.target.value)}
             />
-          <div className="flex gap-2">
-          <label>Postal code</label>
-         <div>
-         <input type="text"
-          placeholder="Postal code"
-          value={postalCode}
-          onChange={ev => setPostalCode(ev.target.value)}
-          />
-         </div>
-          <div>
-          <label>City</label>
-            <input type="text"
-            placeholder="City"
-            value={city}
-            onChange={ev => setCity(ev.target.value)}
-            />
-          </div>
-          </div>
-          <label>Country</label>
-            <input type="text"
-            placeholder="Country"
-            value={country}
-            onChange={ev => setCountry(ev.target.value)}
+            <div className="flex gap-2">
+              <div>
+              <label>Postal code</label>
+                <input
+                  type="text"
+                  placeholder="Postal code"
+                  value={postalCode}
+                  onChange={(ev) => setPostalCode(ev.target.value)}
+                />
+              </div>
+              <div>
+                <label>City</label>
+                <input
+                  type="text"
+                  placeholder="City"
+                  value={city}
+                  onChange={(ev) => setCity(ev.target.value)}
+                />
+              </div>
+            </div>
+            <label>Country</label>
+            <input
+              type="text"
+              placeholder="Country"
+              value={country}
+              onChange={(ev) => setCountry(ev.target.value)}
             />
             <button type="submit">Save</button>
           </form>
