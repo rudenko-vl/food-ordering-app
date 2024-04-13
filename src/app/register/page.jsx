@@ -8,6 +8,7 @@ import { signIn } from "next-auth/react";
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
   const [creatingUser, setCreatingUser] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
   const [error, setError] = useState(false);
@@ -28,7 +29,7 @@ const RegisterPage = () => {
 
     const response = await fetch("/api/register", {
       method: "POST",
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, userName, admin: false }),
       headers: { "Content-Type": "application/json" },
     });
     if (response.ok) {
@@ -78,6 +79,13 @@ const RegisterPage = () => {
           value={password}
           disabled={creatingUser}
           onChange={(ev) => setPassword(ev.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Name"
+          value={userName}
+          disabled={creatingUser}
+          onChange={(ev) => setUserName(ev.target.value)}
         />
         <button type="submit" disabled={isEmail && isPass ? false : true}>
           {creatingUser ? <Loader size={20} /> : "Register"}
